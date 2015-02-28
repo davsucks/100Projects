@@ -107,6 +107,12 @@ RSpec.describe ChangeReturn do
 		end
 	end
 
+	describe '.truncate' do
+		it 'truncates decimals' do
+			expect(ChangeReturn.truncate(1.45)).to eq(1)
+		end
+	end
+
 	describe '.run' do
 		it 'returns .calculate_change' do
 			expect(ChangeReturn).to receive(:calculate_change).and_return( {} )
