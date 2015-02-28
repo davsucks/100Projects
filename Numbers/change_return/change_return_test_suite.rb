@@ -65,14 +65,9 @@ RSpec.describe ChangeReturn do
 
 	describe '.display_change' do
 		it 'returns a nicely displayed hash' do
-			change_hash = {
-				total: 5.41,
-				dollars: 5,
-				quarters: 1,
-				dimes: 1,
-				nickels: 1,
-				pennies: 1
-			}
+			expect(ChangeReturn).to receive(:puts)
+			expect(ChangeReturn).to receive(:proper_pluralize).exactly(5).times
+			ChangeReturn.display_change({})
 		end
 	end
 
@@ -80,8 +75,62 @@ RSpec.describe ChangeReturn do
 		context 'when the cost is 5 dollars' do
 			context 'when given 5 dollars' do
 				it 'returns no change' do
-					expect(ChangeReturn.calculate_change(5, 5)).to eq(0)
+					expect(ChangeReturn.calculate_change(5, 5)).to eq({
+						total: 0,
+						dollars: 0,
+						quarters: 0,
+						dimes: 0,
+						nickels: 0,
+						pennies: 0
+						})
 				end
+			end
+
+			context 'when given 6.41' do
+				it 'returns a hash that contains one of each denomination' do
+					expect(ChangeReturn.calculate_change(5, 6.41)).to eq({
+						total: 1.41,
+						dollars: 1,
+						quarters: 1,
+						dimes: 1,
+						nickels: 1,
+						pennies: 1
+						})
+				end
+			end
+		end
+
+		context 'when the total is 3.73' do
+			context 'when given 4.09' do
+				it 'returns a hash for $0.36' do
+					expect(ChangeReturn.calculate_change(3.73, 4.09)).to eq({
+						total: 0.36,
+						dollars: 0,
+						quarters: 1,
+						dimes: 1,
+						nickels: 0,
+						pennies: 1
+						})
+				end
+			end
+
+			context 'when given 6.69' do
+				it 'returns a hash for $2.96' do
+					expect(ChangeReturn.calculate_change(3.73, 6.69)).to eq({
+						total: 2.96,
+						dollars: 2,
+						quarters: 3,
+						dimes: 2,
+						nickels: 0,
+						pennies: 1
+					})
+				end
+			end
+		end
+
+		context 'when not given enough money' do
+			it 'raises an error' do
+				expect{ ChangeReturn.calculate_change(3, 2) }.to raise_error("Not enough money")
 			end
 		end
 	end
