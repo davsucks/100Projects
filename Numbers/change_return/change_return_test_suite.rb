@@ -101,6 +101,12 @@ RSpec.describe ChangeReturn do
 		end
 	end
 
+	describe '.determine_change' do
+		it 'mods the remainder by denominator and rounds by two' do
+			expect(ChangeReturn.determine_change(0.45, 0.10)).to eq((0.45 % 0.1).round(2))
+		end
+	end
+
 	describe '.run' do
 		it 'returns .calculate_change' do
 			expect(ChangeReturn).to receive(:calculate_change).and_return( {} )
