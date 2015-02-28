@@ -113,26 +113,11 @@ RSpec.describe ChangeReturn do
 		end
 	end
 
-	describe '.run' do
-		it 'returns .calculate_change' do
-			expect(ChangeReturn).to receive(:calculate_change).and_return( {} )
-			expect(ChangeReturn).to receive(:prompt_user).twice
-			expect(ChangeReturn).to receive(:display_change).and_return("ret")
-			expect(ChangeReturn.run).to eq("ret")
-		end
-	end
-
-	describe '.check_input' do
-		context 'when given incorrect input' do
-			it 'raises an exception' do
-				expect{ ChangeReturn.check_input(nil) }.to raise_error("Bad user input")
-			end
-		end
-
-		context 'when given correct input' do
-			it 'does nothing' do
-				expect{ ChangeReturn.check_input(12.43) }.to_not raise_error
-			end
+	describe '.display_change' do
+		it 'returns a nicely displayed hash' do
+			expect(ChangeReturn).to receive(:puts)
+			expect(ChangeReturn).to receive(:proper_pluralize).exactly(5).times
+			ChangeReturn.display_change({})
 		end
 	end
 
@@ -158,13 +143,26 @@ RSpec.describe ChangeReturn do
 		end
 	end
 
-	describe '.display_change' do
-		it 'returns a nicely displayed hash' do
-			expect(ChangeReturn).to receive(:puts)
-			expect(ChangeReturn).to receive(:proper_pluralize).exactly(5).times
-			ChangeReturn.display_change({})
+	describe '.check_input' do
+		context 'when given incorrect input' do
+			it 'raises an exception' do
+				expect{ ChangeReturn.check_input(nil) }.to raise_error("Bad user input")
+			end
+		end
+
+		context 'when given correct input' do
+			it 'does nothing' do
+				expect{ ChangeReturn.check_input(12.43) }.to_not raise_error
+			end
 		end
 	end
 
-	
+	describe '.run' do
+		it 'returns .calculate_change' do
+			expect(ChangeReturn).to receive(:calculate_change).and_return( {} )
+			expect(ChangeReturn).to receive(:prompt_user).twice
+			expect(ChangeReturn).to receive(:display_change).and_return("ret")
+			expect(ChangeReturn.run).to eq("ret")
+		end
+	end
 end

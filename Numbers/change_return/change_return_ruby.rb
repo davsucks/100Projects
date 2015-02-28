@@ -14,6 +14,32 @@ class ChangeReturn
 	# returns a hash of each type of US coin and the amount of that coin
 	def self.calculate_change(cost, amount_given)
 		raise "Not enough money" if cost > amount_given
+		assign_change_hash(cost, amount_given)
+	end
+
+	def self.assign_change_hash(cost, amount_given)
+		change_hash = {}
+		change_hash[:total] = (amount_given - cost).round(2)
+		change_hash[:dollars] = truncate(amount_given - cost)
+
+		assign_coins(change_hash, determine_change(change_hash[:total], 1))
+	end
+
+	def self.assign_coins(change_hash, change)
+		%i(quarters dimes nickels pennies).zip([QUARTER_C, DIME_C, NICKEL_C, PENNY_C]).each do |index, value|
+			change_hash[index] = truncate(change / value)
+			change = determine_change(change, value)
+		end
+
+		change_hash
+	end
+
+	def self.determine_change(remainder, denominator)
+		(remainder % denominator).round(2)
+	end
+
+	def self.truncate(decimal)
+		decimal.to_i
 	end
 
 	def self.display_change(change_hash)
@@ -47,4 +73,10 @@ class ChangeReturn
 
 		display_change(calculate_change(cost, amount_given))
 	end
+
+private
+	QUARTER_C = 0.25
+	DIME_C = 0.1
+	NICKEL_C = 0.05
+	PENNY_C = 0.01
 end
