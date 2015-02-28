@@ -89,6 +89,18 @@ RSpec.describe ChangeReturn do
 		end
 	end
 
+	describe '.assign_coins' do
+		after(:each) { ChangeReturn.assign_coins({}, 0) }
+
+		it 'calls truncate four times' do
+			expect(ChangeReturn).to receive(:truncate).exactly(4).times
+		end
+
+		it 'calls determine_change four times' do
+			expect(ChangeReturn).to receive(:determine_change).exactly(4).times.and_return(0)
+		end
+	end
+
 	describe '.run' do
 		it 'returns .calculate_change' do
 			expect(ChangeReturn).to receive(:calculate_change).and_return( {} )
