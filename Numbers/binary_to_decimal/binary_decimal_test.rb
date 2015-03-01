@@ -27,4 +27,31 @@ RSpec.describe BinaryDecimal do
 			BinaryDecimal.binary_to_decimal(1)
 		end
 	end
+
+	describe '.decimal_to_binary' do
+		it 'calls calculate_binary_from_decimal' do
+			expect(BinaryDecimal).to receive(:calculate_binary_from_decimal)
+			BinaryDecimal.decimal_to_binary(489287)
+		end
+	end
+
+	describe '.calculate_binary_from_decimal' do
+		context 'when given 1' do
+			it 'returns 1' do
+				expect(BinaryDecimal.decimal_to_binary(1)).to eq(1)
+			end
+		end
+
+		context 'when given 12' do
+			it 'returns 1100' do
+				expect(BinaryDecimal.decimal_to_binary(12)).to eq(1100)
+			end
+		end
+
+		context 'when given 4319847' do
+			it 'returns 10000011110101001100111' do
+				expect(BinaryDecimal.decimal_to_binary(4319847)).to eq(10000011110101001100111)
+			end
+		end
+	end
 end
