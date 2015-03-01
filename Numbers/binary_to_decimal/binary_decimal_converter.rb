@@ -16,6 +16,21 @@ class BinaryDecimal
 	end
 
 	def self.decimal_to_binary(decimal)
+		raise 'Cannot convert negative decimal to binary' if decimal < 0
+		raise 'Can only convert integer to binary' unless decimal.is_a? Integer
+		calculate_binary_from_decimal(decimal)
+	end
 
+	def self.calculate_binary_from_decimal(decimal)
+		ret_val = ""
+		while decimal > 0
+			ret_val.prepend(convert_to_string(decimal % 2))
+			decimal = decimal / 2
+		end
+		ret_val.to_i
+	end
+
+	def self.convert_to_string(int)
+		int.to_s
 	end
 end
