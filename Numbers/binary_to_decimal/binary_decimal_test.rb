@@ -53,5 +53,25 @@ RSpec.describe BinaryDecimal do
 				expect(BinaryDecimal.decimal_to_binary(4319847)).to eq(10000011110101001100111)
 			end
 		end
+
+		context 'when given a negative number' do
+			it 'raises an error' do
+				expect{ BinaryDecimal.decimal_to_binary(-1) }.to raise_error('Cannot convert negative decimal to binary')
+			end
+		end
+
+		context 'when not given an integer' do
+			it 'raises an error' do
+				expect{ BinaryDecimal.decimal_to_binary(1.24) }.to raise_error('Can only convert integer to binary')
+			end
+		end
+	end
+
+	describe '.convert_to_string' do
+		it 'calls to_s on its argument' do
+			int = double()
+			expect(int).to receive(:to_s)
+			BinaryDecimal.convert_to_string(int)
+		end
 	end
 end
